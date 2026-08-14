@@ -98,7 +98,9 @@ final class PropertyTypeResolver
             }
 
             if (! is_string($compiledIterableType)) {
+                // @codeCoverageIgnoreStart
                 throw new RuntimeException('At this point $compiledIterableType should be a string');
+                // @codeCoverageIgnoreEnd
             }
 
             return ($property->nullable ? '?' : '') . 'array<' . $compiledIterableType . '>';
