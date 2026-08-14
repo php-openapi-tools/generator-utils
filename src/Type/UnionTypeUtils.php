@@ -8,6 +8,8 @@ use OpenAPITools\Representation;
 
 use function array_filter;
 use function array_unique;
+use function array_values;
+use function explode;
 use function gettype;
 use function implode;
 use function is_array;
@@ -37,16 +39,41 @@ final class UnionTypeUtils
 
         return implode(
             '|',
-            array_unique(
-                array_filter(
+            self::uniqueTypeParts(
+                array_values(
                     array_filter(
-                        $typeList,
-                        is_string(...),
+                        array_filter(
+                            $typeList,
+                            is_string(...),
+                        ),
+                        static fn (string $item): bool => trim($item) !== '',
                     ),
-                    static fn (string $item): bool => trim($item) !== '',
                 ),
             ),
         );
+    }
+
+    /**
+     * @param list<string> $typeList
+     *
+     * @return list<string>
+     */
+    private static function uniqueTypeParts(array $typeList): array
+    {
+        $typeParts = [];
+
+        foreach ($typeList as $type) {
+            foreach (explode('|', $type) as $typePart) {
+                $typePart = trim($typePart);
+                if ($typePart === '') {
+                    continue;
+                }
+
+                $typeParts[] = $typePart;
+            }
+        }
+
+        return array_values(array_unique($typeParts));
     }
 
     /** @return iterable<Representation\Namespaced\Schema> */
