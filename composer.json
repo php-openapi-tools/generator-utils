@@ -11,8 +11,8 @@
   "require": {
     "php": "^8.4",
     "nikic/php-parser": "^5.0",
-    "openapi-tools/representation": "dev-main",
-    "openapi-tools/utils": "dev-main"
+    "openapi-tools/representation": "^0.1.0",
+    "openapi-tools/utils": "^0.1.0"
   },
   "require-dev": {
     "wyrihaximus/async-test-utilities": "^13.5.1",
